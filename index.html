@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Invitación al cine 🍿</title>
+
+  <style>
+    :root{
+      --bg1:#0f1226;
+      --bg2:#1b1f3a;
+      --card: rgba(255,255,255,.08);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --yes:#22c55e;
+      --no:#ef4444;
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --radius: 22px;
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height:100%; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 50% 20%, rgba(255,255,255,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      overflow:hidden;
+    }
+
+    .wrap{ width: min(520px, 100%); }
+
+    .card{
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 22px;
+      backdrop-filter: blur(10px);
+    }
+
+    .title{
+      font-size: clamp(22px, 5vw, 30px);
+      line-height: 1.15;
+      margin: 0 0 10px;
+      text-align:center;
+      letter-spacing:.2px;
+    }
+
+    .subtitle{
+      margin: 0 0 18px;
+      text-align:center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .row{
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    button{
+      appearance:none;
+      border:0;
+      cursor:pointer;
+      border-radius: 999px;
+      padding: 14px 18px;
+      font-weight: 800;
+      font-size: 18px;
+      min-width: 140px;
+      box-shadow: 0 12px 25px rgba(0,0,0,.25);
+      transition: transform .18s ease, width .18s ease, height .18s ease, font-size .18s ease, opacity .18s ease;
+      touch-action: manipulation;
+      user-select: none;
+    }
+    button:active{ transform: scale(.98); }
+
+    .btn-yes{ background: var(--yes); color: #07210f; }
+    .btn-no{ background: var(--no); color: #2a0505; }
+
+    /* Para que el botón SI pueda crecer de forma gradual */
+    #yesBtn{
+      width: var(--yesW, 160px);
+      height: var(--yesH, 52px);
+      font-size: var(--yesF, 18px);
+    }
+
+    /* Sección películas */
+    .movies{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .movie-card{
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      width: 100%;
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 14px 28px rgba(0,0,0,.22);
+      cursor:pointer;
+      transition: transform .15s ease;
+      user-select:none;
+    }
+    .movie-card:active{ transform: scale(.99); }
+
+    .poster{
+      width: 74px;
+      height: 110px;
+      border-radius: 12px;
+      object-fit: cover;
+      flex: 0 0 auto;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(0,0,0,.25);
+    }
+
+    .movie-info{ text-align:left; flex: 1 1 auto; }
+    .movie-title{
+      margin:0;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing:.2px;
+    }
+    .movie-hint{
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* Pantalla final */
+    .final-box{
+      margin-top: 14px;
+      padding: 16px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(34,197,94,.14);
+      color: rgba(255,255,255,.95);
+      font-size: 16px;
+      line-height: 1.35;
+      text-align:center;
+    }
+
+    /* Modo “SI ocupa toda la pantalla” */
+    .fullscreen-yes{
+      position: fixed;
+      inset: 0;
+      width: 100vw !important;
+      height: 100vh !important;
+      border-radius: 0 !important;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: clamp(26px, 8vw, 46px) !important;
+      letter-spacing: .5px;
+      z-index: 9999;
+    }
+
+    .hidden{ display:none !important; }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+
+    <!-- Paso 1 -->
+    <section class="card" id="step1">
+      <h1 class="title">¿Quieres ir al cine conmigo? 🍿</h1>
+
+      <div class="row">
+        <button class="btn-yes" id="yesBtn" type="button">SI</button>
+        <button class="btn-no" id="noBtn" type="button">NO</button>
+      </div>
+    </section>
+
+    <!-- Paso 2 -->
+    <section class="card hidden" id="step2">
+      <h2 class="title">¡Bien! 😍</h2>
+      <p class="subtitle"><strong>Escoge una pelicula:</strong></p>
+
+      <div class="movies">
+        <div class="movie-card" role="button" tabindex="0"
+             data-movie="Rio"
+             data-img="https://es.web.img3.acsta.net/medias/nmedia/18/82/78/80/19696270.jpg">
+          <img class="poster" alt="Portada Rio">
+          <div class="movie-info">
+            <p class="movie-title">Rio</p>
+            <p class="movie-hint">Toca para escoger</p>
+          </div>
+        </div>
+
+        <div class="movie-card" role="button" tabindex="0"
+             data-movie="Goat"
+             data-img="https://score.procinal.com.co/mobilecomjson/imagenes/1618.jpg">
+          <img class="poster" alt="Portada GOAT">
+          <div class="movie-info">
+            <p class="movie-title">Goat</p>
+            <p class="movie-hint">Toca para escoger</p>
+          </div>
+        </div>
+
+        <div class="movie-card" role="button" tabindex="0"
+     	data-movie="El niño y la garza"
+     	data-img="https://es.web.img3.acsta.net/c_300_300/pictures/23/10/25/10/18/1825540.jpg">
+          <img class="poster" alt="Portada El niño y la garza">
+          <div class="movie-info">
+            <p class="movie-title">El niño y la garza</p>
+            <p class="movie-hint">Toca para escoger</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Paso 3 -->
+    <section class="card hidden" id="step3">
+      <h2 class="title">¡Excelente! 💚</h2>
+      <div class="final-box" id="finalMsg"></div>
+
+      <div class="row" style="margin-top:14px;">
+        <button type="button" class="btn-yes" id="backBtn" style="min-width:220px;">
+          Volver
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const step1 = document.getElementById("step1");
+    const step2 = document.getElementById("step2");
+    const step3 = document.getElementById("step3");
+
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn  = document.getElementById("noBtn");
+    const finalMsg = document.getElementById("finalMsg");
+    const backBtn = document.getElementById("backBtn");
+
+    // Tamaño inicial del botón SI (px) y crecimiento por cada NO
+    let yesW = 160, yesH = 52, yesF = 18;
+    const growW = 80, growH = 28, growF = 4;
+
+    function applyYesSize() {
+      yesBtn.style.setProperty("--yesW", yesW + "px");
+      yesBtn.style.setProperty("--yesH", yesH + "px");
+      yesBtn.style.setProperty("--yesF", yesF + "px");
+    }
+    applyYesSize();
+
+    function showStep(n){
+      step1.classList.add("hidden");
+      step2.classList.add("hidden");
+      step3.classList.add("hidden");
+      if(n === 1) step1.classList.remove("hidden");
+      if(n === 2) step2.classList.remove("hidden");
+      if(n === 3) step3.classList.remove("hidden");
+    }
+
+    // Cargar posters desde data-img con fallback si falla
+    const fallbackPoster =
+      'data:image/svg+xml;charset=UTF-8,' +
+      encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="300" height="450">
+          <defs>
+            <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#2b2f55"/>
+              <stop offset="1" stop-color="#141735"/>
+            </linearGradient>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#g)"/>
+          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+                fill="rgba(255,255,255,0.85)" font-size="28" font-family="Arial, sans-serif">
+            Poster
+          </text>
+        </svg>
+      `);
+
+    document.querySelectorAll(".movie-card").forEach(card => {
+      const img = card.querySelector("img.poster");
+      const url = card.dataset.img;
+
+      img.src = url;
+      img.onerror = () => { img.src = fallbackPoster; };
+    });
+
+    // SI -> ir a elegir película
+    yesBtn.addEventListener("click", () => {
+      yesBtn.classList.remove("fullscreen-yes");
+      showStep(2);
+    });
+
+    // NO -> SI crece hasta ocupar toda la pantalla
+    noBtn.addEventListener("click", () => {
+      yesW += growW;
+      yesH += growH;
+      yesF += growF;
+      applyYesSize();
+
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      if (yesW >= vw * 0.85 || yesH >= vh * 0.70) {
+        yesBtn.classList.add("fullscreen-yes");
+        noBtn.classList.add("hidden");
+        yesBtn.textContent = "SÍÍÍ 💚";
+      }
+    });
+
+	function pickMovie(movie){
+
+  		let message = "";
+
+  		if(movie === "Rio"){
+    		message = "Buena elección, veamos como se desarrollan las aventuras de Blu y Perla en Rio de Janeiro. Y si Blu lograra enamorar a Perla. Quedamos el sábado 28 de Febrero a las 7:00 P.M. para verla, no faltes!";
+  		}
+
+  		else if(movie === "Goat"){
+   		message = "Me gustaaa, basket y animacion! Estoy emocionado por ver esa pelicula. Yo se que va a estar muy buena. Quedamos el sábado 28 de Febrero a las 7:00 P.M. para verla, no faltes!";
+ 		}
+
+  		else if(movie === "El niño y la garza"){
+   	 	message = "Ufff, seguimos nuestro recorrido por el Studio Ghibli con El Niño y la Garza, me gusta la idea, veamos que nueva historia y paisajes nos tiene preparado. Quedamos el sábado 28 de Febrero a las 7:00 P.M. para verla, no faltes!";
+  		}
+
+ 	 	finalMsg.textContent = message;
+  		showStep(3);
+    	}
+
+    document.querySelectorAll(".movie-card").forEach(card => {
+      card.addEventListener("click", () => pickMovie(card.dataset.movie));
+      card.addEventListener("keydown", (e) => {
+        if(e.key === "Enter" || e.key === " ") pickMovie(card.dataset.movie);
+      });
+    });
+
+    backBtn.addEventListener("click", () => showStep(2));
+
+    window.addEventListener("resize", () => {
+      if (yesBtn.classList.contains("fullscreen-yes")) {
+        yesBtn.style.width = "100vw";
+        yesBtn.style.height = "100vh";
+      }
+    });
+  </script>
+</body>
+</html>
