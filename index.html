@@ -154,22 +154,6 @@
       text-align:center;
     }
 
-    /* Modo “SI ocupa toda la pantalla” */
-    .fullscreen-yes{
-	  position: fixed;
-	  top: 0;
-	  left: 0;
-	  width: 100%;
-	  height: 100dvh; /* altura real en móviles modernos */
-	  border-radius: 0 !important;
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  font-size: clamp(26px, 8vw, 46px) !important;
-	  letter-spacing: .5px;
-	  z-index: 9999;
-	}
-
     .hidden{ display:none !important; }
   </style>
 </head>
@@ -302,22 +286,19 @@
       showStep(2);
     });
 
-    // NO -> SI crece hasta ocupar toda la pantalla
-    noBtn.addEventListener("click", () => {
-      yesW += growW;
-      yesH += growH;
-		yesF += growF;
-      applyYesSize();
+   noBtn.addEventListener("click", () => {
 
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
+  	yesW += 40;   // crece ancho
+  	yesH += 10;   // crece alto
+  	yesF += 2;    // crece texto
 
-      if (yesW >= vw * 0.85 || yesH >= vh * 0.70) {
-        yesBtn.classList.add("fullscreen-yes");
-        noBtn.classList.add("hidden");
-        yesBtn.textContent = "SÍÍÍ";
-      }
-    });
+  applyYesSize();
+	   
+  if (yesW >= 320) {
+    noBtn.style.display = "none";
+  }
+
+});
 
 	function pickMovie(movie){
 
@@ -358,6 +339,7 @@
 </body>
 
 </html>
+
 
 
 
