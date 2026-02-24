@@ -178,7 +178,7 @@
 
     <!-- Paso 1 -->
     <section class="card" id="step1">
-      <h1 class="title">¿Quieres ir al cine conmigo? 🍿</h1>
+      <h1 class="title">¿Quieres ir al cine conmigo? 😉💖</h1>
 
       <div class="row">
         <button class="btn-yes" id="yesBtn" type="button">SI</button>
@@ -188,7 +188,7 @@
 
     <!-- Paso 2 -->
     <section class="card hidden" id="step2">
-      <h2 class="title">¡Bien! 😍</h2>
+      <h2 class="title">¡Bien! Yo sabia que ibas a decir que si 😝</h2>
       <p class="subtitle"><strong>Escoge una pelicula:</strong></p>
 
       <div class="movies">
@@ -305,13 +305,12 @@
     noBtn.addEventListener("click", () => {
       yesW += growW;
       yesH += growH;
-      yesF += growF;
       applyYesSize();
 
       const vw = window.innerWidth;
       const vh = window.innerHeight;
 
-      if (yesW >= vw * 0.85 || yesH >= vh * 0.70) {
+      if (yesW >= vw * 1 || yesH >= vh * 1) {
         yesBtn.classList.add("fullscreen-yes");
         noBtn.classList.add("hidden");
         yesBtn.textContent = "SÍÍÍ 💚";
@@ -355,4 +354,5 @@
     });
   </script>
 </body>
+
 </html>
