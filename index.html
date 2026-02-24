@@ -156,18 +156,19 @@
 
     /* Modo “SI ocupa toda la pantalla” */
     .fullscreen-yes{
-      position: fixed;
-      inset: 0;
-      width: 100vw !important;
-      height: 100vh !important;
-      border-radius: 0 !important;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size: clamp(26px, 8vw, 46px) !important;
-      letter-spacing: .5px;
-      z-index: 9999;
-    }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh; /* altura real en móviles modernos */
+  border-radius: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(26px, 8vw, 46px) !important;
+  letter-spacing: .5px;
+  z-index: 9999;
+}
 
     .hidden{ display:none !important; }
   </style>
@@ -226,7 +227,7 @@
 
     <!-- Paso 3 -->
     <section class="card hidden" id="step3">
-      <h2 class="title">¡Excelente! 💚</h2>
+      <h2 class="title">¡Excelente! 💕</h2>
       <div class="final-box" id="finalMsg"></div>
 
       <div class="row" style="margin-top:14px;">
@@ -314,7 +315,7 @@
       if (yesW >= vw * 0.85 || yesH >= vh * 0.70) {
         yesBtn.classList.add("fullscreen-yes");
         noBtn.classList.add("hidden");
-        yesBtn.textContent = "SÍÍÍ 💚";
+        yesBtn.textContent = "SÍÍÍ";
       }
     });
 
@@ -357,4 +358,5 @@
 </body>
 
 </html>
+
 
