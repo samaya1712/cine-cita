@@ -305,12 +305,13 @@
     noBtn.addEventListener("click", () => {
       yesW += growW;
       yesH += growH;
+		yesF += growF;
       applyYesSize();
 
       const vw = window.innerWidth;
       const vh = window.innerHeight;
 
-      if (yesW >= vw * 1 || yesH >= vh * 1) {
+      if (yesW >= vw * 0.85 || yesH >= vh * 0.70) {
         yesBtn.classList.add("fullscreen-yes");
         noBtn.classList.add("hidden");
         yesBtn.textContent = "SÍÍÍ 💚";
@@ -356,3 +357,4 @@
 </body>
 
 </html>
+
